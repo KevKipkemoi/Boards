@@ -21,10 +21,14 @@
             {% for board in boards %}
             <tr>
                 <td>
-                    {{ board.name }}
+                    {{ board.name }}<br>
                     <small style="color: #888">{{ board.description }}</small>
                 </td>
+                <td>0</td>
+                <td>0</td>
+                <td></td>
             </tr>
+            {% endfor %}
         </tbody>
     </table>
 
