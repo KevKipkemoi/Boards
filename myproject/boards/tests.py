@@ -6,6 +6,7 @@ from .models import Board
 from django.contrib.auth.models import User
 from .views import new_topic
 from .models import Board, Topic, Post
+from .forms import NewTopicForm
 
 class HomeTests(TestCase):
     def setUp(self):
@@ -55,6 +56,12 @@ class NewTopicTests(TestCase):
         Board.objects.create(name='Django', description='Django board.')
         User.objects.create_user(username='john', email='john@doe.com', password='123')
 
+    def test_contains_form(self):
+        url = reverse('new_topic', kwargs={'pk': 1})
+        response = self.client.get(url)
+        form = response.context.get('form')
+        self.assertIsInstance(form, NewTopicForm)
+
     def test_new_topic_view_success_status_code(self):
         url = reverse('new_topic', kwargs={'pk': 1})
         response = self.client.get(url)
@@ -98,6 +105,7 @@ class NewTopicTests(TestCase):
         url = reverse('new_topic', kwargs={'pk': 1})
         response = self.client.post(url, {})
         self.assertEquals(response.status_code, 200)
+        self.assertTrue(form.errors)
 
     def test__new_topic_invalid_post_data_empty_fields(self):
         url = reverse('new_topic', kwargs={'pk': 1})
